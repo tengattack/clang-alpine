@@ -30,7 +30,7 @@ stage0() {
         -DLLVM_ENABLE_ZLIB=YES \
         -DLLVM_HOST_TRIPLE=x86_64-alpine-linux-musl \
         -DLLVM_INCLUDE_EXAMPLES=NO
-    ninja clang -j $cpu
+    ninja -j$cpu clang
     ninja install-clang
     cmake -P tools/clang/lib/Headers/cmake_install.cmake
 }
@@ -81,8 +81,8 @@ stage1() {
     # fix build for libc++.so
     # https://github.com/tpimh/ngtc/issues/3
     # add -lgcc to the first link with libunwind.so.1.0, which is the build of libc++.so
-    sed -i -e 's/\(LINK_LIBRARIES = .*\)\(-lm -lrt lib\/libunwind.so.1.0\)/\1-lgcc \2/' build.ninja
-    ninja cxx -j $cpu
+    sed -i -e 's/\(LINK_LIBRARIES = .*-lc \)\(.*lib\/libunwind.so.1.0\)/\1-lgcc \2/' build.ninja
+    ninja -j$cpu cxx
     ninja install-libcxx install-libcxxabi
     cmake -P projects/libunwind/cmake_install.cmake
 }
@@ -117,8 +117,8 @@ stage2() {
         -DLLVM_INCLUDE_EXAMPLES=NO \
         \
         -DCLANG_DEFAULT_CXX_STDLIB=libc++
-    ninja clang -j $cpu
-    ninja bin/clang-format -j $cpu
+    ninja -j$cpu clang
+    ninja -j$cpu bin/clang-format
     ninja install-clang
     cmake -P tools/clang/lib/Headers/cmake_install.cmake
 }
