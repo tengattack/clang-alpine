@@ -6,7 +6,7 @@ prefix=/build/llvm
 src=$prefix/src
 
 install_tools() {
-    apk --no-cache add build-base git cmake ninja python2 linux-headers
+    apt-get install -y --no-install-recommends build-essential git cmake ninja-build python2 linux-headers-amd64
 }
 
 hp() {

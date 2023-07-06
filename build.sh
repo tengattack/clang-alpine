@@ -18,7 +18,7 @@ stage0() {
         -DLLVM_BUILD_EXAMPLES=NO \
         -DLLVM_BUILD_RUNTIME:BOOL=OFF \
         -DLLVM_BUILD_TESTS=NO \
-        -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-alpine-linux-musl \
+        -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_ENABLE_ASSERTIONS=NO \
         -DLLVM_ENABLE_CXX1Y=YES \
         -DLLVM_ENABLE_FFI=NO \
@@ -28,7 +28,7 @@ stage0() {
         -DLLVM_ENABLE_SPHINX=NO \
         -DLLVM_ENABLE_TERMINFO=YES \
         -DLLVM_ENABLE_ZLIB=YES \
-        -DLLVM_HOST_TRIPLE=x86_64-alpine-linux-musl \
+        -DLLVM_HOST_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_INCLUDE_EXAMPLES=NO
     ninja -j$cpu clang
     ninja install-clang
@@ -54,7 +54,7 @@ stage1() {
         -DLLVM_BUILD_EXAMPLES=NO \
         -DLLVM_BUILD_RUNTIME:BOOL=ON \
         -DLLVM_BUILD_TESTS=NO \
-        -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-alpine-linux-musl \
+        -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_ENABLE_ASSERTIONS=NO \
         -DLLVM_ENABLE_CXX1Y=YES \
         -DLLVM_ENABLE_FFI=NO \
@@ -64,24 +64,20 @@ stage1() {
         -DLLVM_ENABLE_SPHINX=NO \
         -DLLVM_ENABLE_TERMINFO=YES \
         -DLLVM_ENABLE_ZLIB=YES \
-        -DLLVM_HOST_TRIPLE=x86_64-alpine-linux-musl \
+        -DLLVM_HOST_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_INCLUDE_EXAMPLES=NO \
         \
-        -DLIBCXX_HAS_MUSL_LIBC:BOOL=ON \
-        -DLIBCXX_HAS_GCC_S_LIB:BOOL=OFF \
-        -DLIBCXXABI_TARGET_TRIPLE=x86_64-alpine-linux-musl \
+        -DLIBCXX_HAS_MUSL_LIBC:BOOL=OFF \
+        -DLIBCXX_HAS_GCC_S_LIB:BOOL=ON \
+        -DLIBCXXABI_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
         -DLIBCXXABI_USE_COMPILER_RT:BOOL=ON \
         -DLIBCXXABI_USE_LLVM_UNWINDER:BOOL=ON \
         \
-        -DLIBUNWIND_TARGET_TRIPLE=x86_64-alpine-linux-musl \
+        -DLIBUNWIND_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
         \
-        -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=x86_64-alpine-linux-musl \
+        -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
         -DCOMPILER_RT_BUILD_BUILTINS=ON \
         -DCOMPILER_RT_BUILD_SANITIZERS=ON
-    # fix build for libc++.so
-    # https://github.com/tpimh/ngtc/issues/3
-    # add -lgcc to the first link with libunwind.so.1.0, which is the build of libc++.so
-    sed -i -e 's/\(LINK_LIBRARIES = .*-lc \)\(.*lib\/libunwind.so.1.0\)/\1-lgcc \2/' build.ninja
     ninja -j$cpu cxx
     ninja install-libcxx install-libcxxabi
     cmake -P projects/libunwind/cmake_install.cmake
@@ -102,7 +98,7 @@ stage2() {
         -DLLVM_BUILD_EXAMPLES=NO \
         -DLLVM_BUILD_RUNTIME:BOOL=OFF \
         -DLLVM_BUILD_TESTS=NO \
-        -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-alpine-linux-musl \
+        -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_ENABLE_ASSERTIONS=NO \
         -DLLVM_ENABLE_CXX1Y=YES \
         -DLLVM_ENABLE_FFI=NO \
@@ -113,7 +109,7 @@ stage2() {
         -DLLVM_ENABLE_SPHINX=NO \
         -DLLVM_ENABLE_TERMINFO=YES \
         -DLLVM_ENABLE_ZLIB=YES \
-        -DLLVM_HOST_TRIPLE=x86_64-alpine-linux-musl \
+        -DLLVM_HOST_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_INCLUDE_EXAMPLES=NO \
         \
         -DCLANG_DEFAULT_CXX_STDLIB=libc++
