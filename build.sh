@@ -31,6 +31,7 @@ stage0() {
         -DLLVM_HOST_TRIPLE=x86_64-unknown-linux-gnu \
         -DLLVM_INCLUDE_EXAMPLES=NO
     ninja -j$cpu clang
+    ninja -j$cpu bin/clang-format
     ninja install-clang
     cmake -P tools/clang/lib/Headers/cmake_install.cmake
 }

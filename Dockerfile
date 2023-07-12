@@ -12,6 +12,10 @@ RUN sed -i -e 's#http://deb.debian.org#http://mirrors.aliyun.com#g' \
 
 RUN ./build.sh stage0
 
-RUN ./build.sh stage1
+# We don't need make bootstrapping clang here
 
-RUN ./build.sh stage2
+# RUN ./build.sh stage1
+
+# RUN ./build.sh stage2
+
+RUN ./build-oclint.sh
