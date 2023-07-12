@@ -6,7 +6,7 @@ prefix=/build/llvm
 src=$prefix/src
 
 install_tools() {
-    apt-get install -y --no-install-recommends build-essential git cmake ninja-build python2 linux-headers-amd64
+    apt-get install -y --no-install-recommends ca-certificates build-essential git cmake ninja-build python2 linux-headers-amd64
 }
 
 hp() {

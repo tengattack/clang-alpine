@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-apt-get install -y --no-install-recommends ca-certificates build-essential git make cmake ninja-build python2
+apt-get install -y --no-install-recommends build-essential git make cmake ninja-build python2
 
 ln -s /usr/bin/python2 /usr/bin/python
 
